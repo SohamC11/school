@@ -1,813 +1,814 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Team E | Road to Civil War</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Oswald:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg:     #faf7f2;
-    --paper:  #ffffff;
-    --ink:    #1a1208;
-    --mid:    #6b5a3e;
-    --light:  #c9bda8;
-    --red:    #7a1e10;
-    --gold:   #b8922e;
-    --navy:   #1b2a40;
-    --rule:   #ddd5c4;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    font-family: 'Source Serif 4', Georgia, serif;
-    color: var(--ink);
-    font-size: 18px;
-    line-height: 1.8;
-  }
-
-  /* ── HEADER ── */
-  header {
-    background: var(--navy);
-    padding: 52px 40px 44px;
-    text-align: center;
-  }
-
-  .hdr-label {
-    font-family: 'Oswald', sans-serif;
-    font-size: 11px;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 16px;
-  }
-
-  .hdr-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(38px, 6vw, 72px);
-    font-weight: 900;
-    color: #fff;
-    line-height: 1;
-  }
-
-  .hdr-title em { color: var(--gold); font-style: italic; }
-
-  .hdr-sub {
-    font-size: 17px;
-    font-style: italic;
-    color: rgba(255,255,255,.5);
-    margin-top: 12px;
-  }
-
-  .hdr-team {
-    font-family: 'Oswald', sans-serif;
-    font-size: 11px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.35);
-    margin-top: 20px;
-  }
-
-  /* ── EQ BAR ── */
-  .eq-bar {
-    background: var(--red);
-    padding: 18px 40px;
-    text-align: center;
-  }
-
-  .eq-bar p {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: clamp(14px, 1.8vw, 18px);
-    color: rgba(255,255,255,.9);
-    max-width: 780px;
-    margin: 0 auto;
-    line-height: 1.5;
-  }
-
-  .eq-bar .eq-kicker {
-    font-family: 'Oswald', sans-serif;
-    font-size: 10px;
-    letter-spacing: 4px;
-    color: rgba(255,255,255,.55);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--paper);
-    border-bottom: 1px solid var(--rule);
-    display: flex;
-    justify-content: center;
-    gap: 0;
-  }
-
-  nav a {
-    font-family: 'Oswald', sans-serif;
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--mid);
-    text-decoration: none;
-    padding: 14px 28px;
-    transition: color .15s;
-  }
-
-  nav a:hover { color: var(--ink); }
-
-  /* ── PAGE ── */
-  .page {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 0 28px 80px;
-  }
-
-  /* ── TIMELINE ── */
-  .timeline {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    margin: 56px 0 0;
-    border: 1px solid var(--rule);
-    background: var(--paper);
-  }
-
-  .tl {
-    flex: 1;
-    min-width: 90px;
-    padding: 14px 10px;
-    text-align: center;
-    border-right: 1px solid var(--rule);
-    font-family: 'Oswald', sans-serif;
-    color: var(--mid);
-  }
-  .tl:last-child { border-right: none; }
-  .tl .yr { display: block; font-size: 18px; font-weight: 500; color: var(--ink); line-height: 1; margin-bottom: 3px; }
-  .tl .ev { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; }
-  .tl.now { background: var(--navy); }
-  .tl.now .yr { color: var(--gold); }
-  .tl.now .ev { color: rgba(255,255,255,.6); }
-
-  /* ── EVENT SECTION ── */
-  .event {
-    margin-top: 64px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity .6s ease, transform .6s ease;
-  }
-  .event.on { opacity: 1; transform: none; }
-
-  /* event label */
-  .ev-eyebrow {
-    font-family: 'Oswald', sans-serif;
-    font-size: 10px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 8px;
-  }
-
-  .ev-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(28px, 4vw, 48px);
-    font-weight: 900;
-    color: var(--ink);
-    line-height: 1.05;
-    border-bottom: 2px solid var(--ink);
-    padding-bottom: 16px;
-    margin-bottom: 6px;
-  }
-  .ev-title em { color: var(--red); }
-
-  .ev-date {
-    font-size: 15px;
-    font-style: italic;
-    color: var(--mid);
-    margin-bottom: 36px;
-  }
-
-  /* ── FACTS ROW ── */
-  .facts {
-    display: flex;
-    gap: 0;
-    border: 1px solid var(--rule);
-    margin-bottom: 40px;
-  }
-  .fact {
-    flex: 1;
-    padding: 14px 18px;
-    border-right: 1px solid var(--rule);
-    text-align: center;
-  }
-  .fact:last-child { border-right: none; }
-  .fact .fl { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--mid); margin-bottom: 4px; }
-  .fact .fv { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.25; }
-
-  /* ── IMAGE LAYOUT ── */
-  .img-row {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 28px;
-    align-items: start;
-    margin-bottom: 36px;
-  }
-  .img-row.flip { grid-template-columns: 1fr 240px; }
-  @media(max-width:620px) {
-    .img-row, .img-row.flip { grid-template-columns: 1fr; }
-    .img-row.flip figure { order: -1; }
-  }
-
-  .portrait-pair {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 36px;
-  }
-  @media(max-width:520px) { .portrait-pair { grid-template-columns: 1fr; } }
-
-  figure {
-    border: 1px solid var(--rule);
-    background: #f5f0e8;
-  }
-  figure img {
-    width: 100%;
-    display: block;
-    filter: sepia(20%) contrast(1.04);
-    object-fit: cover;
-  }
-  figcaption {
-    padding: 9px 12px;
-    font-size: 13px;
-    font-style: italic;
-    color: var(--mid);
-    border-top: 1px solid var(--rule);
-    line-height: 1.45;
-  }
-
-  /* ── SECTION HEADING ── */
-  .sh {
-    font-family: 'Oswald', sans-serif;
-    font-size: 10px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--mid);
-    margin-bottom: 10px;
-    margin-top: 36px;
-  }
-  .sh:first-child { margin-top: 0; }
-
-  /* ── PROSE ── */
-  .prose { font-size: 18px; line-height: 1.8; color: var(--ink); }
-  .prose p { margin-bottom: 14px; }
-  .prose p:last-child { margin-bottom: 0; }
-  .prose strong { font-weight: 600; }
-  .prose em { font-style: italic; }
-
-  /* ── PULL QUOTE ── */
-  .pq {
-    border-left: 3px solid var(--gold);
-    padding: 14px 20px;
-    margin: 28px 0;
-  }
-  .pq p {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    font-style: italic;
-    color: var(--red);
-    line-height: 1.55;
-    margin: 0 0 7px;
-  }
-  .pq cite {
-    font-family: 'Oswald', sans-serif;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--mid);
-    text-transform: uppercase;
-  }
-
-  /* ── SIGNIFICANCE ── */
-  .sig {
-    background: var(--navy);
-    padding: 28px 28px;
-    margin-top: 40px;
-  }
-  .sig-label {
-    font-family: 'Oswald', sans-serif;
-    font-size: 10px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 20px;
-  }
-  .sig-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  @media(max-width:580px) { .sig-grid { grid-template-columns: 1fr; } }
-  .sig-card {
-    border-left: 2px solid var(--gold);
-    padding: 12px 14px;
-  }
-  .sig-card h4 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 7px;
-  }
-  .sig-card p { font-size: 16px; line-height: 1.65; color: rgba(255,255,255,.8); margin: 0; }
-  .sig-card p strong { color: #fff; font-weight: 600; }
-
-  /* ── RULE ── */
-  hr { border: none; border-top: 1px solid var(--rule); margin: 40px 0; }
-
-  /* ── MCQ ── */
-  .mcq {
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    padding: 28px 28px;
-    margin-top: 40px;
-  }
-  .mcq-label {
-    font-family: 'Oswald', sans-serif;
-    font-size: 10px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--red);
-    margin-bottom: 6px;
-  }
-  .mcq-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--rule);
-  }
-  .q-block { margin-bottom: 24px; }
-  .q-block:last-child { margin-bottom: 0; }
-  .q-text {
-    font-family: 'Source Serif 4', serif;
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 12px;
-    line-height: 1.45;
-  }
-  .q-num {
-    display: inline-block;
-    background: var(--ink);
-    color: #fff;
-    font-family: 'Oswald', sans-serif;
-    font-size: 10px;
-    padding: 2px 8px;
-    margin-right: 6px;
-    vertical-align: middle;
-  }
-  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-  @media(max-width:500px) { .opts { grid-template-columns: 1fr; } }
-  .opt {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 11px 14px;
-    border: 1px solid var(--rule);
-    background: var(--bg);
-    cursor: pointer;
-    font-family: 'Source Serif 4', serif;
-    font-size: 16px;
-    color: var(--ink);
-    text-align: left;
-    line-height: 1.45;
-    transition: border-color .15s, background .15s;
-  }
-  .opt:hover { border-color: var(--mid); background: #f0ece4; }
-  .opt.ok  { background: #eaf5eb; border-color: #3a7d44; color: #1e4d26; }
-  .opt.bad { background: #fdf0ee; border-color: var(--red); color: var(--red); }
-  .opt.dim { opacity: .38; pointer-events: none; }
-  .opt-l { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 12px; min-width: 18px; color: var(--mid); }
-  .opt.ok  .opt-l { color: #3a7d44; }
-  .opt.bad .opt-l { color: var(--red); }
-  .fb { display: none; margin-top: 10px; padding: 10px 14px; font-size: 15.5px; font-style: italic; border-left: 3px solid var(--gold); color: var(--ink); line-height: 1.55; }
-  .fb.on { display: block; }
-  .score { display: none; margin-top: 16px; padding: 12px; text-align: center; background: var(--navy); color: var(--gold); font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; }
-
-  /* ── BIB ── */
-  .bib { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--rule); }
-  .bib-label { font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--mid); margin-bottom: 12px; }
-  .bib p { font-size: 14px; color: var(--mid); line-height: 1.65; margin-bottom: 6px; padding-left: 22px; text-indent: -22px; }
-
-  /* ── EQ ANSWER ── */
-  .eq-ans {
-    margin-top: 64px;
-    padding: 40px 0;
-    border-top: 2px solid var(--ink);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity .6s .1s ease, transform .6s .1s ease;
-  }
-  .eq-ans.on { opacity: 1; transform: none; }
-  .eq-ans .ev-eyebrow { margin-bottom: 12px; }
-  .eq-ans h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(18px, 2.5vw, 26px);
-    font-style: italic;
-    font-weight: 400;
-    color: var(--ink);
-    margin-bottom: 28px;
-    line-height: 1.4;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--navy);
-    text-align: center;
-    padding: 24px 20px;
-    font-family: 'Oswald', sans-serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.3);
-  }
-</style>
-</head>
-<body>
-
-<header>
-  <div class="hdr-label">Team E · American History Anthology</div>
-  <div class="hdr-title">The <em>Road</em> to Civil War</div>
-  <div class="hdr-sub">Slavery, Law & the Fracturing of a Nation</div>
-  <div class="hdr-team">Soham · Ishaan · Myra</div>
-</header>
-
-<div class="eq-bar">
-  <div class="eq-kicker">Essential Question</div>
-  <p>How have economic, political and cultural decisions promoted or prevented the growth of personal freedom, individual responsibility, equality and respect for human dignity?</p>
-</div>
-
-<nav>
-  <a href="#dred">Dred Scott</a>
-  <a href="#freeport">Freeport Doctrine</a>
-  <a href="#eq-ans">Essential Question</a>
-</nav>
-
-<div class="page">
-
-  <!-- TIMELINE -->
-  <div class="timeline">
-    <div class="tl"><span class="yr">1820</span><span class="ev">Missouri Compromise</span></div>
-    <div class="tl"><span class="yr">1850</span><span class="ev">Compromise</span></div>
-    <div class="tl"><span class="yr">1854</span><span class="ev">Kansas-Nebraska</span></div>
-    <div class="tl now"><span class="yr">1857</span><span class="ev">Dred Scott</span></div>
-    <div class="tl now"><span class="yr">1858</span><span class="ev">Freeport</span></div>
-    <div class="tl"><span class="yr">1860</span><span class="ev">Lincoln Elected</span></div>
-    <div class="tl"><span class="yr">1861</span><span class="ev">Civil War</span></div>
+/index.html
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team E | Road to Civil War</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Oswald:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #faf7f2;
+      --paper:  #ffffff;
+      --ink:    #1a1208;
+      --mid:    #6b5a3e;
+      --light:  #c9bda8;
+      --red:    #7a1e10;
+      --gold:   #b8922e;
+      --navy:   #1b2a40;
+      --rule:   #ddd5c4;
+    }
+  
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+  
+    body {
+      background: var(--bg);
+      font-family: 'Source Serif 4', Georgia, serif;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+  
+    /* ── HEADER ── */
+    header {
+      background: var(--navy);
+      padding: 52px 40px 44px;
+      text-align: center;
+    }
+  
+    .hdr-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+  
+    .hdr-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 6vw, 72px);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+    }
+  
+    .hdr-title em { color: var(--gold); font-style: italic; }
+  
+    .hdr-sub {
+      font-size: 17px;
+      font-style: italic;
+      color: rgba(255,255,255,.5);
+      margin-top: 12px;
+    }
+  
+    .hdr-team {
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+      margin-top: 20px;
+    }
+  
+    /* ── EQ BAR ── */
+    .eq-bar {
+      background: var(--red);
+      padding: 18px 40px;
+      text-align: center;
+    }
+  
+    .eq-bar p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(14px, 1.8vw, 18px);
+      color: rgba(255,255,255,.9);
+      max-width: 780px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+  
+    .eq-bar .eq-kicker {
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,.55);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+  
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--paper);
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      justify-content: center;
+      gap: 0;
+    }
+  
+    nav a {
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--mid);
+      text-decoration: none;
+      padding: 14px 28px;
+      transition: color .15s;
+    }
+  
+    nav a:hover { color: var(--ink); }
+  
+    /* ── PAGE ── */
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 28px 80px;
+    }
+  
+    /* ── TIMELINE ── */
+    .timeline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin: 56px 0 0;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+    }
+  
+    .tl {
+      flex: 1;
+      min-width: 90px;
+      padding: 14px 10px;
+      text-align: center;
+      border-right: 1px solid var(--rule);
+      font-family: 'Oswald', sans-serif;
+      color: var(--mid);
+    }
+    .tl:last-child { border-right: none; }
+    .tl .yr { display: block; font-size: 18px; font-weight: 500; color: var(--ink); line-height: 1; margin-bottom: 3px; }
+    .tl .ev { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; }
+    .tl.now { background: var(--navy); }
+    .tl.now .yr { color: var(--gold); }
+    .tl.now .ev { color: rgba(255,255,255,.6); }
+  
+    /* ── EVENT SECTION ── */
+    .event {
+      margin-top: 64px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .event.on { opacity: 1; transform: none; }
+  
+    /* event label */
+    .ev-eyebrow {
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+  
+    .ev-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.05;
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 16px;
+      margin-bottom: 6px;
+    }
+    .ev-title em { color: var(--red); }
+  
+    .ev-date {
+      font-size: 15px;
+      font-style: italic;
+      color: var(--mid);
+      margin-bottom: 36px;
+    }
+  
+    /* ── FACTS ROW ── */
+    .facts {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--rule);
+      margin-bottom: 40px;
+    }
+    .fact {
+      flex: 1;
+      padding: 14px 18px;
+      border-right: 1px solid var(--rule);
+      text-align: center;
+    }
+    .fact:last-child { border-right: none; }
+    .fact .fl { font-family: 'Oswald', sans-serif; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--mid); margin-bottom: 4px; }
+    .fact .fv { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.25; }
+  
+    /* ── IMAGE LAYOUT ── */
+    .img-row {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 28px;
+      align-items: start;
+      margin-bottom: 36px;
+    }
+    .img-row.flip { grid-template-columns: 1fr 240px; }
+    @media(max-width:620px) {
+      .img-row, .img-row.flip { grid-template-columns: 1fr; }
+      .img-row.flip figure { order: -1; }
+    }
+  
+    .portrait-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 36px;
+    }
+    @media(max-width:520px) { .portrait-pair { grid-template-columns: 1fr; } }
+  
+    figure {
+      border: 1px solid var(--rule);
+      background: #f5f0e8;
+    }
+    figure img {
+      width: 100%;
+      display: block;
+      filter: sepia(20%) contrast(1.04);
+      object-fit: cover;
+    }
+    figcaption {
+      padding: 9px 12px;
+      font-size: 13px;
+      font-style: italic;
+      color: var(--mid);
+      border-top: 1px solid var(--rule);
+      line-height: 1.45;
+    }
+  
+    /* ── SECTION HEADING ── */
+    .sh {
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 10px;
+      margin-top: 36px;
+    }
+    .sh:first-child { margin-top: 0; }
+  
+    /* ── PROSE ── */
+    .prose { font-size: 18px; line-height: 1.8; color: var(--ink); }
+    .prose p { margin-bottom: 14px; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { font-weight: 600; }
+    .prose em { font-style: italic; }
+  
+    /* ── PULL QUOTE ── */
+    .pq {
+      border-left: 3px solid var(--gold);
+      padding: 14px 20px;
+      margin: 28px 0;
+    }
+    .pq p {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-style: italic;
+      color: var(--red);
+      line-height: 1.55;
+      margin: 0 0 7px;
+    }
+    .pq cite {
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--mid);
+      text-transform: uppercase;
+    }
+  
+    /* ── SIGNIFICANCE ── */
+    .sig {
+      background: var(--navy);
+      padding: 28px 28px;
+      margin-top: 40px;
+    }
+    .sig-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .sig-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media(max-width:580px) { .sig-grid { grid-template-columns: 1fr; } }
+    .sig-card {
+      border-left: 2px solid var(--gold);
+      padding: 12px 14px;
+    }
+    .sig-card h4 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 7px;
+    }
+    .sig-card p { font-size: 16px; line-height: 1.65; color: rgba(255,255,255,.8); margin: 0; }
+    .sig-card p strong { color: #fff; font-weight: 600; }
+  
+    /* ── RULE ── */
+    hr { border: none; border-top: 1px solid var(--rule); margin: 40px 0; }
+  
+    /* ── MCQ ── */
+    .mcq {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 28px 28px;
+      margin-top: 40px;
+    }
+    .mcq-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 6px;
+    }
+    .mcq-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .q-block { margin-bottom: 24px; }
+    .q-block:last-child { margin-bottom: 0; }
+    .q-text {
+      font-family: 'Source Serif 4', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 12px;
+      line-height: 1.45;
+    }
+    .q-num {
+      display: inline-block;
+      background: var(--ink);
+      color: #fff;
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      padding: 2px 8px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    @media(max-width:500px) { .opts { grid-template-columns: 1fr; } }
+    .opt {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 14px;
+      border: 1px solid var(--rule);
+      background: var(--bg);
+      cursor: pointer;
+      font-family: 'Source Serif 4', serif;
+      font-size: 16px;
+      color: var(--ink);
+      text-align: left;
+      line-height: 1.45;
+      transition: border-color .15s, background .15s;
+    }
+    .opt:hover { border-color: var(--mid); background: #f0ece4; }
+    .opt.ok  { background: #eaf5eb; border-color: #3a7d44; color: #1e4d26; }
+    .opt.bad { background: #fdf0ee; border-color: var(--red); color: var(--red); }
+    .opt.dim { opacity: .38; pointer-events: none; }
+    .opt-l { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 12px; min-width: 18px; color: var(--mid); }
+    .opt.ok  .opt-l { color: #3a7d44; }
+    .opt.bad .opt-l { color: var(--red); }
+    .fb { display: none; margin-top: 10px; padding: 10px 14px; font-size: 15.5px; font-style: italic; border-left: 3px solid var(--gold); color: var(--ink); line-height: 1.55; }
+    .fb.on { display: block; }
+    .score { display: none; margin-top: 16px; padding: 12px; text-align: center; background: var(--navy); color: var(--gold); font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; }
+  
+    /* ── BIB ── */
+    .bib { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--rule); }
+    .bib-label { font-family: 'Oswald', sans-serif; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--mid); margin-bottom: 12px; }
+    .bib p { font-size: 14px; color: var(--mid); line-height: 1.65; margin-bottom: 6px; padding-left: 22px; text-indent: -22px; }
+  
+    /* ── EQ ANSWER ── */
+    .eq-ans {
+      margin-top: 64px;
+      padding: 40px 0;
+      border-top: 2px solid var(--ink);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .6s .1s ease, transform .6s .1s ease;
+    }
+    .eq-ans.on { opacity: 1; transform: none; }
+    .eq-ans .ev-eyebrow { margin-bottom: 12px; }
+    .eq-ans h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 28px;
+      line-height: 1.4;
+    }
+  
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      text-align: center;
+      padding: 24px 20px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.3);
+    }
+  </style>
+  </head>
+  <body>
+  
+  <header>
+    <div class="hdr-label">Team E · American History Anthology</div>
+    <div class="hdr-title">The <em>Road</em> to Civil War</div>
+    <div class="hdr-sub">Slavery, Law & the Fracturing of a Nation</div>
+    <div class="hdr-team">Soham · Ishaan · Myra</div>
+  </header>
+  
+  <div class="eq-bar">
+    <div class="eq-kicker">Essential Question</div>
+    <p>How have economic, political and cultural decisions promoted or prevented the growth of personal freedom, individual responsibility, equality and respect for human dignity?</p>
   </div>
-
-
-  <!-- ═══════════════════════════
-       DRED SCOTT
-  ═══════════════════════════ -->
-  <section class="event" id="dred">
-
-    <div style="margin-top:64px;">
-      <div class="ev-eyebrow">Event I of II</div>
-      <div class="ev-title">The <em>Dred Scott</em> Decision</div>
-      <div class="ev-date">March 6, 1857 · Supreme Court of the United States</div>
+  
+  <nav>
+    <a href="#dred">Dred Scott</a>
+    <a href="#freeport">Freeport Doctrine</a>
+    <a href="#eq-ans">Essential Question</a>
+  </nav>
+  
+  <div class="page">
+  
+    <!-- TIMELINE -->
+    <div class="timeline">
+      <div class="tl"><span class="yr">1820</span><span class="ev">Missouri Compromise</span></div>
+      <div class="tl"><span class="yr">1850</span><span class="ev">Compromise</span></div>
+      <div class="tl"><span class="yr">1854</span><span class="ev">Kansas-Nebraska</span></div>
+      <div class="tl now"><span class="yr">1857</span><span class="ev">Dred Scott</span></div>
+      <div class="tl now"><span class="yr">1858</span><span class="ev">Freeport</span></div>
+      <div class="tl"><span class="yr">1860</span><span class="ev">Lincoln Elected</span></div>
+      <div class="tl"><span class="yr">1861</span><span class="ev">Civil War</span></div>
     </div>
-
-    <div class="facts">
-      <div class="fact"><div class="fl">Date</div><div class="fv">March 6, 1857</div></div>
-      <div class="fact"><div class="fl">Chief Justice</div><div class="fv">Roger B. Taney</div></div>
-      <div class="fact"><div class="fl">Vote</div><div class="fv">7–2 Against Scott</div></div>
-      <div class="fact"><div class="fl">Key Effect</div><div class="fv">Missouri Compromise Voided</div></div>
-    </div>
-
-    <!-- Background -->
-    <div class="img-row">
-      <figure>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Dred_Scott_photograph_%281857%29.jpg/440px-Dred_Scott_photograph_%281857%29.jpg" alt="Dred Scott, 1857" loading="lazy" style="height:300px;">
-        <figcaption>Dred Scott, photographed 1857 — the year the Court denied him his freedom.</figcaption>
-      </figure>
-      <div>
-        <div class="sh">Background</div>
-        <div class="prose">
-          <p><strong>Dred Scott</strong> was an enslaved man owned by U.S. Army surgeon Dr. John Emerson. Between 1833 and 1843, Emerson brought Scott to live in <strong>Illinois</strong> (a free state) and the <strong>Wisconsin Territory</strong>, where the Missouri Compromise banned slavery.</p>
-          <p>After Emerson's death, Scott sued for his freedom in 1846, arguing that years of living on free soil had made him legally free. Backed by abolitionists, the case reached the Supreme Court after over a decade in lower courts.</p>
+  
+  
+    <!-- ═══════════════════════════
+         DRED SCOTT
+    ═══════════════════════════ -->
+    <section class="event" id="dred">
+  
+      <div style="margin-top:64px;">
+        <div class="ev-eyebrow">Event I of II</div>
+        <div class="ev-title">The <em>Dred Scott</em> Decision</div>
+        <div class="ev-date">March 6, 1857 · Supreme Court of the United States</div>
+      </div>
+  
+      <div class="facts">
+        <div class="fact"><div class="fl">Date</div><div class="fv">March 6, 1857</div></div>
+        <div class="fact"><div class="fl">Chief Justice</div><div class="fv">Roger B. Taney</div></div>
+        <div class="fact"><div class="fl">Vote</div><div class="fv">7–2 Against Scott</div></div>
+        <div class="fact"><div class="fl">Key Effect</div><div class="fv">Missouri Compromise Voided</div></div>
+      </div>
+  
+      <!-- Background -->
+      <div class="img-row">
+        <figure>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Dred_Scott_photograph_%281857%29.jpg/440px-Dred_Scott_photograph_%281857%29.jpg" alt="Dred Scott, 1857" loading="lazy" style="height:300px;">
+          <figcaption>Dred Scott, photographed 1857 — the year the Court denied him his freedom.</figcaption>
+        </figure>
+        <div>
+          <div class="sh">Background</div>
+          <div class="prose">
+            <p><strong>Dred Scott</strong> was an enslaved man owned by U.S. Army surgeon Dr. John Emerson. Between 1833 and 1843, Emerson brought Scott to live in <strong>Illinois</strong> (a free state) and the <strong>Wisconsin Territory</strong>, where the Missouri Compromise banned slavery.</p>
+            <p>After Emerson's death, Scott sued for his freedom in 1846, arguing that years of living on free soil had made him legally free. Backed by abolitionists, the case reached the Supreme Court after over a decade in lower courts.</p>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Ruling -->
-    <div class="img-row flip">
-      <div>
-        <div class="sh">The Ruling — Three Findings</div>
-        <div class="prose">
-          <p><strong>① No Citizenship.</strong> African Americans were not U.S. citizens and had no right to sue in federal court. Taney wrote they were "beings of an inferior order."</p>
-          <p><strong>② No Freedom from Residence.</strong> Time on free soil did not change Scott's status — Missouri's slave law governed him.</p>
-          <p><strong>③ Missouri Compromise Unconstitutional.</strong> Congress had never had authority to ban slavery from territories. Enslaved people were property protected by the <strong>Fifth Amendment.</strong></p>
+  
+      <!-- Ruling -->
+      <div class="img-row flip">
+        <div>
+          <div class="sh">The Ruling — Three Findings</div>
+          <div class="prose">
+            <p><strong>① No Citizenship.</strong> African Americans were not U.S. citizens and had no right to sue in federal court. Taney wrote they were "beings of an inferior order."</p>
+            <p><strong>② No Freedom from Residence.</strong> Time on free soil did not change Scott's status — Missouri's slave law governed him.</p>
+            <p><strong>③ Missouri Compromise Unconstitutional.</strong> Congress had never had authority to ban slavery from territories. Enslaved people were property protected by the <strong>Fifth Amendment.</strong></p>
+          </div>
+          <div class="pq">
+            <p>"The question is simply this: can a negro… become a member of the political community formed… by the Constitution?"</p>
+            <cite>— Chief Justice Roger B. Taney, 1857</cite>
+          </div>
         </div>
-        <div class="pq">
-          <p>"The question is simply this: can a negro… become a member of the political community formed… by the Constitution?"</p>
-          <cite>— Chief Justice Roger B. Taney, 1857</cite>
+        <figure>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Roger_B._Taney_-_three_quarter_length_portrait.jpg/440px-Roger_B._Taney_-_three_quarter_length_portrait.jpg" alt="Chief Justice Roger B. Taney" loading="lazy" style="height:310px;">
+          <figcaption>Chief Justice Roger B. Taney authored the 7–2 ruling.</figcaption>
+        </figure>
+      </div>
+  
+      <!-- Reactions -->
+      <div class="sh">Reactions</div>
+      <div class="prose">
+        <p><strong>The South</strong> celebrated — proclaiming the slavery debate settled once and for all by the nation's highest court.</p>
+        <p><strong>The North erupted in fury.</strong> Republicans called it "a willful perversion of the Constitution." Abolitionists declared it proof that a <em>"Slave Power"</em> had captured the entire federal government. Frederick Douglass called it "a most scandalous and devilish perversion."</p>
+      </div>
+  
+      <!-- Significance -->
+      <div class="sig">
+        <div class="sig-label">Significance in American History</div>
+        <div class="sig-grid">
+          <div class="sig-card">
+            <h4>Demolished Compromise</h4>
+            <p>The Missouri Compromise had anchored sectional peace for <strong>37 years.</strong> Voiding it removed the legal foundation for any limits on slavery's spread.</p>
+          </div>
+          <div class="sig-card">
+            <h4>Energized Republicans</h4>
+            <p>The ruling transformed the Republican platform into a <strong>moral crusade,</strong> swelling their ranks and making Lincoln's 1860 coalition possible.</p>
+          </div>
+          <div class="sig-card">
+            <h4>Deepened Sectional Distrust</h4>
+            <p>Northerners became convinced a <strong>"Slave Power"</strong> controlled the presidency, Congress, and now the Supreme Court. Disunion inched closer.</p>
+          </div>
+          <div class="sig-card">
+            <h4>Answers the Essential Question</h4>
+            <p>The ruling did not merely fail to promote human dignity — it <strong>weaponized the Constitution against it</strong> for economic and political gain.</p>
+          </div>
         </div>
       </div>
-      <figure>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Roger_B._Taney_-_three_quarter_length_portrait.jpg/440px-Roger_B._Taney_-_three_quarter_length_portrait.jpg" alt="Chief Justice Roger B. Taney" loading="lazy" style="height:310px;">
-        <figcaption>Chief Justice Roger B. Taney authored the 7–2 ruling.</figcaption>
-      </figure>
-    </div>
-
-    <!-- Reactions -->
-    <div class="sh">Reactions</div>
-    <div class="prose">
-      <p><strong>The South</strong> celebrated — proclaiming the slavery debate settled once and for all by the nation's highest court.</p>
-      <p><strong>The North erupted in fury.</strong> Republicans called it "a willful perversion of the Constitution." Abolitionists declared it proof that a <em>"Slave Power"</em> had captured the entire federal government. Frederick Douglass called it "a most scandalous and devilish perversion."</p>
-    </div>
-
-    <!-- Significance -->
-    <div class="sig">
-      <div class="sig-label">Significance in American History</div>
-      <div class="sig-grid">
-        <div class="sig-card">
-          <h4>Demolished Compromise</h4>
-          <p>The Missouri Compromise had anchored sectional peace for <strong>37 years.</strong> Voiding it removed the legal foundation for any limits on slavery's spread.</p>
+  
+      <!-- MCQ -->
+      <div class="mcq">
+        <div class="mcq-label">Assessment</div>
+        <div class="mcq-title">Check Your Understanding</div>
+        <div class="q-block">
+          <div class="q-text"><span class="q-num">Q1</span> What was the primary legal basis Taney used to rule against Scott?</div>
+          <div class="opts" data-correct="B" data-qid="ds1">
+            <button class="opt" data-opt="A" onclick="pick(this)"><span class="opt-l">A</span>Scott voluntarily returned to Missouri, forfeiting his claim to freedom.</button>
+            <button class="opt" data-opt="B" onclick="pick(this)"><span class="opt-l">B</span>African Americans were not citizens; Congress had no authority to ban slavery in territories.</button>
+            <button class="opt" data-opt="C" onclick="pick(this)"><span class="opt-l">C</span>Illinois was not yet a full state, so its free laws did not apply.</button>
+            <button class="opt" data-opt="D" onclick="pick(this)"><span class="opt-l">D</span>The Missouri Compromise had already expired before Scott filed suit.</button>
+          </div>
+          <div class="fb" id="fb-ds1"></div>
         </div>
-        <div class="sig-card">
-          <h4>Energized Republicans</h4>
-          <p>The ruling transformed the Republican platform into a <strong>moral crusade,</strong> swelling their ranks and making Lincoln's 1860 coalition possible.</p>
+        <div class="q-block">
+          <div class="q-text"><span class="q-num">Q2</span> Why did the ruling increase tensions between the North and South?</div>
+          <div class="opts" data-correct="C" data-qid="ds2">
+            <button class="opt" data-opt="A" onclick="pick(this)"><span class="opt-l">A</span>It forced Southern states to emancipate enslaved people in Northern territories.</button>
+            <button class="opt" data-opt="B" onclick="pick(this)"><span class="opt-l">B</span>It gave Congress new powers to regulate slavery in all existing states.</button>
+            <button class="opt" data-opt="C" onclick="pick(this)"><span class="opt-l">C</span>It invalidated congressional limits on slavery, convincing Northerners a "Slave Power" controlled the government.</button>
+            <button class="opt" data-opt="D" onclick="pick(this)"><span class="opt-l">D</span>It required Northern states to return escaped enslaved people to their owners.</button>
+          </div>
+          <div class="fb" id="fb-ds2"></div>
         </div>
-        <div class="sig-card">
-          <h4>Deepened Sectional Distrust</h4>
-          <p>Northerners became convinced a <strong>"Slave Power"</strong> controlled the presidency, Congress, and now the Supreme Court. Disunion inched closer.</p>
-        </div>
-        <div class="sig-card">
-          <h4>Answers the Essential Question</h4>
-          <p>The ruling did not merely fail to promote human dignity — it <strong>weaponized the Constitution against it</strong> for economic and political gain.</p>
+        <div class="score" id="score-dred"></div>
+      </div>
+  
+      <div class="bib">
+        <div class="bib-label">Bibliography</div>
+        <p>Appleby, Joyce, et al. <em>The American Vision.</em> McGraw-Hill Education, 2018, pp. 5.1–5.4.</p>
+        <p>Savvas Learning Company. <em>America: History of Our Nation.</em> Savvas/Pearson, 2022, pp. 198–200, 245–248.</p>
+        <p>"Dred Scott v. Sandford." <em>Gale In Context: U.S. History,</em> Gale, 2023. Accessed 27 Mar. 2026.</p>
+        <p>Taney, Roger B. <em>Dred Scott v. Sandford,</em> 60 U.S. 393 (1857). Library of Congress, www.loc.gov. Accessed 27 Mar. 2026.</p>
+      </div>
+  
+    </section>
+  
+  
+    <!-- ═══════════════════════════
+         FREEPORT DOCTRINE
+    ═══════════════════════════ -->
+    <section class="event" id="freeport">
+  
+      <div style="margin-top:64px;">
+        <div class="ev-eyebrow">Event II of II</div>
+        <div class="ev-title">The <em>Freeport</em> Doctrine</div>
+        <div class="ev-date">August 27, 1858 · Freeport, Illinois — Lincoln-Douglas Debates, Round II</div>
+      </div>
+  
+      <div class="facts">
+        <div class="fact"><div class="fl">Date</div><div class="fv">Aug. 27, 1858</div></div>
+        <div class="fact"><div class="fl">Location</div><div class="fv">Freeport, Illinois</div></div>
+        <div class="fact"><div class="fl">Debaters</div><div class="fv">Lincoln vs. Douglas</div></div>
+        <div class="fact"><div class="fl">Consequence</div><div class="fv">Democratic Party Split</div></div>
+      </div>
+  
+      <!-- Background + debate image -->
+      <div class="img-row">
+        <figure>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Lincoln-douglas_debate.jpg/600px-Lincoln-douglas_debate.jpg" alt="Lincoln-Douglas Debate 1858" loading="lazy" style="height:300px; object-fit:cover;">
+          <figcaption>A contemporary illustration of the Lincoln-Douglas Debates, 1858 — followed by the entire nation.</figcaption>
+        </figure>
+        <div>
+          <div class="sh">Background</div>
+          <div class="prose">
+            <p>The 1858 Illinois Senate race between Republican <strong>Abraham Lincoln</strong> and incumbent Democrat <strong>Stephen A. Douglas</strong> became one of the most consequential political contests in American history.</p>
+            <p>Douglas had authored the <strong>Kansas-Nebraska Act (1854)</strong>, which introduced <strong>popular sovereignty</strong> — letting territorial settlers vote on slavery. But <em>Dred Scott</em> created a fatal contradiction: if Congress could not ban slavery in territories, could the <em>people</em> of a territory do so?</p>
+            <p>Lincoln prepared a question for their second debate at Freeport designed to force Douglas into an impossible corner.</p>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- MCQ -->
-    <div class="mcq">
-      <div class="mcq-label">Assessment</div>
-      <div class="mcq-title">Check Your Understanding</div>
-      <div class="q-block">
-        <div class="q-text"><span class="q-num">Q1</span> What was the primary legal basis Taney used to rule against Scott?</div>
-        <div class="opts" data-correct="B" data-qid="ds1">
-          <button class="opt" data-opt="A" onclick="pick(this)"><span class="opt-l">A</span>Scott voluntarily returned to Missouri, forfeiting his claim to freedom.</button>
-          <button class="opt" data-opt="B" onclick="pick(this)"><span class="opt-l">B</span>African Americans were not citizens; Congress had no authority to ban slavery in territories.</button>
-          <button class="opt" data-opt="C" onclick="pick(this)"><span class="opt-l">C</span>Illinois was not yet a full state, so its free laws did not apply.</button>
-          <button class="opt" data-opt="D" onclick="pick(this)"><span class="opt-l">D</span>The Missouri Compromise had already expired before Scott filed suit.</button>
-        </div>
-        <div class="fb" id="fb-ds1"></div>
+  
+      <!-- Portraits -->
+      <div class="sh">The Debaters</div>
+      <div class="portrait-pair">
+        <figure>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Abraham_Lincoln_O-77_matte_collodion_print.jpg/440px-Abraham_Lincoln_O-77_matte_collodion_print.jpg" alt="Abraham Lincoln" loading="lazy" style="height:300px; object-fit:cover; object-position:top;">
+          <figcaption><strong>Abraham Lincoln</strong> (R-IL) — his Freeport question was designed not to win the Senate seat, but the presidency in 1860.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Stephen_A_Douglas.jpg/440px-Stephen_A_Douglas.jpg" alt="Stephen A. Douglas" loading="lazy" style="height:300px; object-fit:cover; object-position:top;">
+          <figcaption><strong>Stephen A. Douglas</strong> (D-IL) — his "clever" answer won him the Senate seat and cost him the presidency.</figcaption>
+        </figure>
       </div>
-      <div class="q-block">
-        <div class="q-text"><span class="q-num">Q2</span> Why did the ruling increase tensions between the North and South?</div>
-        <div class="opts" data-correct="C" data-qid="ds2">
-          <button class="opt" data-opt="A" onclick="pick(this)"><span class="opt-l">A</span>It forced Southern states to emancipate enslaved people in Northern territories.</button>
-          <button class="opt" data-opt="B" onclick="pick(this)"><span class="opt-l">B</span>It gave Congress new powers to regulate slavery in all existing states.</button>
-          <button class="opt" data-opt="C" onclick="pick(this)"><span class="opt-l">C</span>It invalidated congressional limits on slavery, convincing Northerners a "Slave Power" controlled the government.</button>
-          <button class="opt" data-opt="D" onclick="pick(this)"><span class="opt-l">D</span>It required Northern states to return escaped enslaved people to their owners.</button>
-        </div>
-        <div class="fb" id="fb-ds2"></div>
+  
+      <!-- The Q&A -->
+      <div class="sh">The Question & The Answer</div>
+      <div class="pq">
+        <p>"Can the people of a United States Territory, in any lawful way… exclude slavery from its limits prior to the formation of a State Constitution?"</p>
+        <cite>— Abraham Lincoln, Freeport, August 27, 1858</cite>
       </div>
-      <div class="score" id="score-dred"></div>
-    </div>
-
-    <div class="bib">
-      <div class="bib-label">Bibliography</div>
-      <p>Appleby, Joyce, et al. <em>The American Vision.</em> McGraw-Hill Education, 2018, pp. 5.1–5.4.</p>
-      <p>Savvas Learning Company. <em>America: History of Our Nation.</em> Savvas/Pearson, 2022, pp. 198–200, 245–248.</p>
-      <p>"Dred Scott v. Sandford." <em>Gale In Context: U.S. History,</em> Gale, 2023. Accessed 27 Mar. 2026.</p>
-      <p>Taney, Roger B. <em>Dred Scott v. Sandford,</em> 60 U.S. 393 (1857). Library of Congress, www.loc.gov. Accessed 27 Mar. 2026.</p>
-    </div>
-
-  </section>
-
-
-  <!-- ═══════════════════════════
-       FREEPORT DOCTRINE
-  ═══════════════════════════ -->
-  <section class="event" id="freeport">
-
-    <div style="margin-top:64px;">
-      <div class="ev-eyebrow">Event II of II</div>
-      <div class="ev-title">The <em>Freeport</em> Doctrine</div>
-      <div class="ev-date">August 27, 1858 · Freeport, Illinois — Lincoln-Douglas Debates, Round II</div>
-    </div>
-
-    <div class="facts">
-      <div class="fact"><div class="fl">Date</div><div class="fv">Aug. 27, 1858</div></div>
-      <div class="fact"><div class="fl">Location</div><div class="fv">Freeport, Illinois</div></div>
-      <div class="fact"><div class="fl">Debaters</div><div class="fv">Lincoln vs. Douglas</div></div>
-      <div class="fact"><div class="fl">Consequence</div><div class="fv">Democratic Party Split</div></div>
-    </div>
-
-    <!-- Background + debate image -->
-    <div class="img-row">
-      <figure>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Lincoln-douglas_debate.jpg/600px-Lincoln-douglas_debate.jpg" alt="Lincoln-Douglas Debate 1858" loading="lazy" style="height:300px; object-fit:cover;">
-        <figcaption>A contemporary illustration of the Lincoln-Douglas Debates, 1858 — followed by the entire nation.</figcaption>
-      </figure>
-      <div>
-        <div class="sh">Background</div>
-        <div class="prose">
-          <p>The 1858 Illinois Senate race between Republican <strong>Abraham Lincoln</strong> and incumbent Democrat <strong>Stephen A. Douglas</strong> became one of the most consequential political contests in American history.</p>
-          <p>Douglas had authored the <strong>Kansas-Nebraska Act (1854)</strong>, which introduced <strong>popular sovereignty</strong> — letting territorial settlers vote on slavery. But <em>Dred Scott</em> created a fatal contradiction: if Congress could not ban slavery in territories, could the <em>people</em> of a territory do so?</p>
-          <p>Lincoln prepared a question for their second debate at Freeport designed to force Douglas into an impossible corner.</p>
+  
+      <div class="prose">
+        <p>Douglas had to answer. His response became the <strong>Freeport Doctrine</strong> — called the <em>"Freeport Heresy"</em> in the South. He said: yes, settlers could effectively exclude slavery by simply <strong>refusing to pass the local legislation slavery needed to survive.</strong> Without local police regulations, slaveholders wouldn't bring enslaved people to that territory.</p>
+        <p>Clever enough to satisfy Illinois moderates — and fatal to his national ambitions.</p>
+      </div>
+  
+      <div class="pq">
+        <p>"Slavery cannot exist a day or an hour anywhere, unless it is supported by local police regulations."</p>
+        <cite>— Stephen A. Douglas, Freeport, August 27, 1858</cite>
+      </div>
+  
+      <div class="sh">Lincoln's Long Game</div>
+      <div class="prose">
+        <p>Douglas narrowly won re-election to the Senate. But Lincoln had seen further ahead: Douglas's answer permanently alienated the Southern wing of the Democratic Party, which believed <em>Dred Scott</em> gave slaveholders an <strong>absolute federal right</strong> to bring enslaved people anywhere — a right Douglas had just quietly nullified.</p>
+      </div>
+  
+      <!-- Significance -->
+      <div class="sig">
+        <div class="sig-label">Significance in American History</div>
+        <div class="sig-grid">
+          <div class="sig-card">
+            <h4>Fractured the Democratic Party</h4>
+            <p>At the 1860 Democratic Convention, Southern delegates walked out. The party split into two tickets — Douglas (North) and <strong>Breckinridge</strong> (South).</p>
+          </div>
+          <div class="sig-card">
+            <h4>Elected Abraham Lincoln</h4>
+            <p>With the Democratic vote divided, Lincoln won with barely <strong>40% of the popular vote.</strong> The Freeport Doctrine is one of the most consequential indirect causes of Lincoln's election.</p>
+          </div>
+          <div class="sig-card">
+            <h4>Exposed Popular Sovereignty's Impossibility</h4>
+            <p>Douglas's answer proved you could not uphold <em>Dred Scott,</em> democracy, and limits on slavery simultaneously. <strong>The nation was being forced to choose.</strong></p>
+          </div>
+          <div class="sig-card">
+            <h4>Answers the Essential Question</h4>
+            <p>Political evasion of moral questions about human dignity does not preserve peace. Douglas's compromise <strong>delayed nothing and broke everything.</strong></p>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Portraits -->
-    <div class="sh">The Debaters</div>
-    <div class="portrait-pair">
-      <figure>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Abraham_Lincoln_O-77_matte_collodion_print.jpg/440px-Abraham_Lincoln_O-77_matte_collodion_print.jpg" alt="Abraham Lincoln" loading="lazy" style="height:300px; object-fit:cover; object-position:top;">
-        <figcaption><strong>Abraham Lincoln</strong> (R-IL) — his Freeport question was designed not to win the Senate seat, but the presidency in 1860.</figcaption>
-      </figure>
-      <figure>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Stephen_A_Douglas.jpg/440px-Stephen_A_Douglas.jpg" alt="Stephen A. Douglas" loading="lazy" style="height:300px; object-fit:cover; object-position:top;">
-        <figcaption><strong>Stephen A. Douglas</strong> (D-IL) — his "clever" answer won him the Senate seat and cost him the presidency.</figcaption>
-      </figure>
-    </div>
-
-    <!-- The Q&A -->
-    <div class="sh">The Question & The Answer</div>
-    <div class="pq">
-      <p>"Can the people of a United States Territory, in any lawful way… exclude slavery from its limits prior to the formation of a State Constitution?"</p>
-      <cite>— Abraham Lincoln, Freeport, August 27, 1858</cite>
-    </div>
-
-    <div class="prose">
-      <p>Douglas had to answer. His response became the <strong>Freeport Doctrine</strong> — called the <em>"Freeport Heresy"</em> in the South. He said: yes, settlers could effectively exclude slavery by simply <strong>refusing to pass the local legislation slavery needed to survive.</strong> Without local police regulations, slaveholders wouldn't bring enslaved people to that territory.</p>
-      <p>Clever enough to satisfy Illinois moderates — and fatal to his national ambitions.</p>
-    </div>
-
-    <div class="pq">
-      <p>"Slavery cannot exist a day or an hour anywhere, unless it is supported by local police regulations."</p>
-      <cite>— Stephen A. Douglas, Freeport, August 27, 1858</cite>
-    </div>
-
-    <div class="sh">Lincoln's Long Game</div>
-    <div class="prose">
-      <p>Douglas narrowly won re-election to the Senate. But Lincoln had seen further ahead: Douglas's answer permanently alienated the Southern wing of the Democratic Party, which believed <em>Dred Scott</em> gave slaveholders an <strong>absolute federal right</strong> to bring enslaved people anywhere — a right Douglas had just quietly nullified.</p>
-    </div>
-
-    <!-- Significance -->
-    <div class="sig">
-      <div class="sig-label">Significance in American History</div>
-      <div class="sig-grid">
-        <div class="sig-card">
-          <h4>Fractured the Democratic Party</h4>
-          <p>At the 1860 Democratic Convention, Southern delegates walked out. The party split into two tickets — Douglas (North) and <strong>Breckinridge</strong> (South).</p>
+  
+      <!-- MCQ -->
+      <div class="mcq">
+        <div class="mcq-label">Assessment</div>
+        <div class="mcq-title">Check Your Understanding</div>
+        <div class="q-block">
+          <div class="q-text"><span class="q-num">Q1</span> What was the central argument of the Freeport Doctrine?</div>
+          <div class="opts" data-correct="A" data-qid="fp1">
+            <button class="opt" data-opt="A" onclick="pick(this)"><span class="opt-l">A</span>Slavery could not survive if local governments refused to pass laws protecting it, regardless of Dred Scott.</button>
+            <button class="opt" data-opt="B" onclick="pick(this)"><span class="opt-l">B</span>Congress had sole authority to determine whether slavery could exist in the territories.</button>
+            <button class="opt" data-opt="C" onclick="pick(this)"><span class="opt-l">C</span>The Dred Scott decision made popular sovereignty illegal and unconstitutional.</button>
+            <button class="opt" data-opt="D" onclick="pick(this)"><span class="opt-l">D</span>Only slave states had the right to vote on slavery in new territories.</button>
+          </div>
+          <div class="fb" id="fb-fp1"></div>
         </div>
-        <div class="sig-card">
-          <h4>Elected Abraham Lincoln</h4>
-          <p>With the Democratic vote divided, Lincoln won with barely <strong>40% of the popular vote.</strong> The Freeport Doctrine is one of the most consequential indirect causes of Lincoln's election.</p>
+        <div class="q-block">
+          <div class="q-text"><span class="q-num">Q2</span> How did the Freeport Doctrine most directly contribute to Lincoln's election in 1860?</div>
+          <div class="opts" data-correct="D" data-qid="fp2">
+            <button class="opt" data-opt="A" onclick="pick(this)"><span class="opt-l">A</span>It convinced Southern voters to abandon Douglas and vote for Lincoln instead.</button>
+            <button class="opt" data-opt="B" onclick="pick(this)"><span class="opt-l">B</span>It caused Douglas to withdraw from the Senate race, boosting Lincoln's profile.</button>
+            <button class="opt" data-opt="C" onclick="pick(this)"><span class="opt-l">C</span>It united the Republican and Whig parties behind a single antislavery platform.</button>
+            <button class="opt" data-opt="D" onclick="pick(this)"><span class="opt-l">D</span>It alienated Southern Democrats, splitting the party and dividing the anti-Lincoln vote.</button>
+          </div>
+          <div class="fb" id="fb-fp2"></div>
         </div>
-        <div class="sig-card">
-          <h4>Exposed Popular Sovereignty's Impossibility</h4>
-          <p>Douglas's answer proved you could not uphold <em>Dred Scott,</em> democracy, and limits on slavery simultaneously. <strong>The nation was being forced to choose.</strong></p>
-        </div>
-        <div class="sig-card">
-          <h4>Answers the Essential Question</h4>
-          <p>Political evasion of moral questions about human dignity does not preserve peace. Douglas's compromise <strong>delayed nothing and broke everything.</strong></p>
-        </div>
+        <div class="score" id="score-freeport"></div>
+      </div>
+  
+      <div class="bib">
+        <div class="bib-label">Bibliography</div>
+        <p>Appleby, Joyce, et al. <em>The American Vision.</em> McGraw-Hill Education, 2018, pp. 5.2, 5.6.</p>
+        <p>Savvas Learning Company. <em>America: History of Our Nation.</em> Savvas/Pearson, 2022, pp. 245–248.</p>
+        <p>"Lincoln-Douglas Debates." <em>Gale In Context: U.S. History,</em> Gale, 2023. Accessed 27 Mar. 2026.</p>
+        <p>Holzer, Harold. <em>The Lincoln-Douglas Debates: The First Complete, Unexpurgated Text.</em> Fordham University Press, 2004.</p>
+      </div>
+  
+    </section>
+  
+  
+    <!-- ═══════════════════════════
+         ESSENTIAL QUESTION
+    ═══════════════════════════ -->
+    <div class="eq-ans" id="eq-ans">
+      <div class="ev-eyebrow">Essential Question · Team E's Answer</div>
+      <h2>"How have economic, political and cultural decisions promoted or prevented the growth of personal freedom, individual responsibility, equality and respect for human dignity?"</h2>
+      <div class="prose">
+        <p>The <strong>Dred Scott Decision</strong> and the <strong>Freeport Doctrine</strong> together offer a sobering answer: when institutions prioritize economic interest and political survival over freedom and human dignity, the result is not stability — it is catastrophe.</p>
+        <p><em>Dred Scott</em> represents one of the most direct legal denials of human dignity in American history. Taney's ruling was not merely a legal opinion — it was the federal government <strong>actively codifying the dehumanization of millions</strong> for economic and political gain. It did not fail to promote freedom; it weaponized the Constitution against it.</p>
+        <p>The <strong>Freeport Doctrine</strong> reveals a different failure: the failure of evasion. Douglas treated slavery as a procedural question rather than a moral one. His answer split his party, handed Lincoln the presidency, and accelerated the very war he tried to prevent. <strong>Political maneuvering cannot indefinitely delay a moral reckoning.</strong></p>
+        <p>Lincoln understood what Douglas did not: a nation cannot permanently endure "half slave and half free." Societies that evade questions of fundamental human dignity through compromise do not avoid conflict — they only make it more violent when it finally arrives.</p>
       </div>
     </div>
-
-    <!-- MCQ -->
-    <div class="mcq">
-      <div class="mcq-label">Assessment</div>
-      <div class="mcq-title">Check Your Understanding</div>
-      <div class="q-block">
-        <div class="q-text"><span class="q-num">Q1</span> What was the central argument of the Freeport Doctrine?</div>
-        <div class="opts" data-correct="A" data-qid="fp1">
-          <button class="opt" data-opt="A" onclick="pick(this)"><span class="opt-l">A</span>Slavery could not survive if local governments refused to pass laws protecting it, regardless of Dred Scott.</button>
-          <button class="opt" data-opt="B" onclick="pick(this)"><span class="opt-l">B</span>Congress had sole authority to determine whether slavery could exist in the territories.</button>
-          <button class="opt" data-opt="C" onclick="pick(this)"><span class="opt-l">C</span>The Dred Scott decision made popular sovereignty illegal and unconstitutional.</button>
-          <button class="opt" data-opt="D" onclick="pick(this)"><span class="opt-l">D</span>Only slave states had the right to vote on slavery in new territories.</button>
-        </div>
-        <div class="fb" id="fb-fp1"></div>
-      </div>
-      <div class="q-block">
-        <div class="q-text"><span class="q-num">Q2</span> How did the Freeport Doctrine most directly contribute to Lincoln's election in 1860?</div>
-        <div class="opts" data-correct="D" data-qid="fp2">
-          <button class="opt" data-opt="A" onclick="pick(this)"><span class="opt-l">A</span>It convinced Southern voters to abandon Douglas and vote for Lincoln instead.</button>
-          <button class="opt" data-opt="B" onclick="pick(this)"><span class="opt-l">B</span>It caused Douglas to withdraw from the Senate race, boosting Lincoln's profile.</button>
-          <button class="opt" data-opt="C" onclick="pick(this)"><span class="opt-l">C</span>It united the Republican and Whig parties behind a single antislavery platform.</button>
-          <button class="opt" data-opt="D" onclick="pick(this)"><span class="opt-l">D</span>It alienated Southern Democrats, splitting the party and dividing the anti-Lincoln vote.</button>
-        </div>
-        <div class="fb" id="fb-fp2"></div>
-      </div>
-      <div class="score" id="score-freeport"></div>
-    </div>
-
-    <div class="bib">
-      <div class="bib-label">Bibliography</div>
-      <p>Appleby, Joyce, et al. <em>The American Vision.</em> McGraw-Hill Education, 2018, pp. 5.2, 5.6.</p>
-      <p>Savvas Learning Company. <em>America: History of Our Nation.</em> Savvas/Pearson, 2022, pp. 245–248.</p>
-      <p>"Lincoln-Douglas Debates." <em>Gale In Context: U.S. History,</em> Gale, 2023. Accessed 27 Mar. 2026.</p>
-      <p>Holzer, Harold. <em>The Lincoln-Douglas Debates: The First Complete, Unexpurgated Text.</em> Fordham University Press, 2004.</p>
-    </div>
-
-  </section>
-
-
-  <!-- ═══════════════════════════
-       ESSENTIAL QUESTION
-  ═══════════════════════════ -->
-  <div class="eq-ans" id="eq-ans">
-    <div class="ev-eyebrow">Essential Question · Team E's Answer</div>
-    <h2>"How have economic, political and cultural decisions promoted or prevented the growth of personal freedom, individual responsibility, equality and respect for human dignity?"</h2>
-    <div class="prose">
-      <p>The <strong>Dred Scott Decision</strong> and the <strong>Freeport Doctrine</strong> together offer a sobering answer: when institutions prioritize economic interest and political survival over freedom and human dignity, the result is not stability — it is catastrophe.</p>
-      <p><em>Dred Scott</em> represents one of the most direct legal denials of human dignity in American history. Taney's ruling was not merely a legal opinion — it was the federal government <strong>actively codifying the dehumanization of millions</strong> for economic and political gain. It did not fail to promote freedom; it weaponized the Constitution against it.</p>
-      <p>The <strong>Freeport Doctrine</strong> reveals a different failure: the failure of evasion. Douglas treated slavery as a procedural question rather than a moral one. His answer split his party, handed Lincoln the presidency, and accelerated the very war he tried to prevent. <strong>Political maneuvering cannot indefinitely delay a moral reckoning.</strong></p>
-      <p>Lincoln understood what Douglas did not: a nation cannot permanently endure "half slave and half free." Societies that evade questions of fundamental human dignity through compromise do not avoid conflict — they only make it more violent when it finally arrives.</p>
-    </div>
+  
   </div>
-
-</div>
-
-<footer>
-  Team E · Soham · Ishaan · Myra &nbsp;·&nbsp; The Dred Scott Decision (1857) · The Freeport Doctrine (1858)
-</footer>
-
-<script>
-const fbText = {
-  ds1: {
-    B: "Correct. Taney's three-part ruling: (1) African Americans had no citizenship and no standing to sue; (2) Missouri's slave law governed Scott's status, not Illinois's; (3) the Missouri Compromise was unconstitutional — Congress had never had authority to ban slavery from territories.",
-    _: "Not quite. Taney ruled on three distinct issues: citizenship, Scott's status under Missouri law, and congressional authority over territories. Review the ruling section above."
-  },
-  ds2: {
-    C: "Correct. By voiding the Missouri Compromise and constitutionally protecting slavery in all territories, the ruling convinced Northerners that a 'Slave Power' had captured the presidency, Congress, and now the Supreme Court.",
-    _: "Incorrect. Focus on what the ruling did to congressional authority over territories and how Northerners interpreted who now controlled the federal government."
-  },
-  fp1: {
-    A: "Correct. Douglas argued slavery required local police regulations to survive. Without them, slaveholders wouldn't bring enslaved people to a territory — effectively excluding slavery without explicitly banning it.",
-    _: "Not quite. Douglas's key argument was practical: slavery needed local protective laws to survive, not just a legal right to exist."
-  },
-  fp2: {
-    D: "Correct. Southern Democrats believed Dred Scott gave them an absolute right to bring enslaved people anywhere. Douglas had quietly nullified that right. At the 1860 Democratic Convention, they walked out — splitting the party and handing Lincoln the presidency.",
-    _: "Incorrect. Think about the 1860 Democratic National Convention: what did Southern Democrats do when Douglas was nominated, and how did that split the anti-Lincoln vote?"
-  }
-};
-
-const scores = {};
-
-function pick(btn) {
-  const container = btn.closest('.opts');
-  const qid = container.dataset.qid;
-  if (scores[qid] !== undefined) return;
-  const correct = container.dataset.correct;
-  const chosen = btn.dataset.opt;
-  const all = container.querySelectorAll('.opt');
-  const fb = document.getElementById('fb-' + qid);
-
-  all.forEach(b => { b.classList.add('dim'); b.style.pointerEvents = 'none'; });
-
-  if (chosen === correct) {
-    btn.classList.remove('dim'); btn.classList.add('ok');
-    scores[qid] = 1;
-    fb.innerHTML = fbText[qid][correct];
-  } else {
-    btn.classList.remove('dim'); btn.classList.add('bad');
-    scores[qid] = 0;
-    all.forEach(b => { if (b.dataset.opt === correct) { b.classList.remove('dim'); b.classList.add('ok'); } });
-    fb.innerHTML = fbText[qid]._;
-  }
-  fb.classList.add('on');
-
-  const pairs = { dred: ['ds1','ds2'], freeport: ['fp1','fp2'] };
-  for (const [name, qs] of Object.entries(pairs)) {
-    if (qs.every(q => scores[q] !== undefined)) {
-      const t = qs.reduce((a, q) => a + (scores[q] || 0), 0);
-      const el = document.getElementById('score-' + name);
-      el.style.display = 'block';
-      el.textContent = `Score: ${t}/2 — ${t===2 ? '★ Excellent!' : t===1 ? 'Good — review the missed question.' : 'Keep studying — re-read the sections above.'}`;
+  
+  <footer>
+    Team E · Soham · Ishaan · Myra &nbsp;·&nbsp; The Dred Scott Decision (1857) · The Freeport Doctrine (1858)
+  </footer>
+  
+  <script>
+  const fbText = {
+    ds1: {
+      B: "Correct. Taney's three-part ruling: (1) African Americans had no citizenship and no standing to sue; (2) Missouri's slave law governed Scott's status, not Illinois's; (3) the Missouri Compromise was unconstitutional — Congress had never had authority to ban slavery from territories.",
+      _: "Not quite. Taney ruled on three distinct issues: citizenship, Scott's status under Missouri law, and congressional authority over territories. Review the ruling section above."
+    },
+    ds2: {
+      C: "Correct. By voiding the Missouri Compromise and constitutionally protecting slavery in all territories, the ruling convinced Northerners that a 'Slave Power' had captured the presidency, Congress, and now the Supreme Court.",
+      _: "Incorrect. Focus on what the ruling did to congressional authority over territories and how Northerners interpreted who now controlled the federal government."
+    },
+    fp1: {
+      A: "Correct. Douglas argued slavery required local police regulations to survive. Without them, slaveholders wouldn't bring enslaved people to a territory — effectively excluding slavery without explicitly banning it.",
+      _: "Not quite. Douglas's key argument was practical: slavery needed local protective laws to survive, not just a legal right to exist."
+    },
+    fp2: {
+      D: "Correct. Southern Democrats believed Dred Scott gave them an absolute right to bring enslaved people anywhere. Douglas had quietly nullified that right. At the 1860 Democratic Convention, they walked out — splitting the party and handing Lincoln the presidency.",
+      _: "Incorrect. Think about the 1860 Democratic National Convention: what did Southern Democrats do when Douglas was nominated, and how did that split the anti-Lincoln vote?"
+    }
+  };
+  
+  const scores = {};
+  
+  function pick(btn) {
+    const container = btn.closest('.opts');
+    const qid = container.dataset.qid;
+    if (scores[qid] !== undefined) return;
+    const correct = container.dataset.correct;
+    const chosen = btn.dataset.opt;
+    const all = container.querySelectorAll('.opt');
+    const fb = document.getElementById('fb-' + qid);
+  
+    all.forEach(b => { b.classList.add('dim'); b.style.pointerEvents = 'none'; });
+  
+    if (chosen === correct) {
+      btn.classList.remove('dim'); btn.classList.add('ok');
+      scores[qid] = 1;
+      fb.innerHTML = fbText[qid][correct];
+    } else {
+      btn.classList.remove('dim'); btn.classList.add('bad');
+      scores[qid] = 0;
+      all.forEach(b => { if (b.dataset.opt === correct) { b.classList.remove('dim'); b.classList.add('ok'); } });
+      fb.innerHTML = fbText[qid]._;
+    }
+    fb.classList.add('on');
+  
+    const pairs = { dred: ['ds1','ds2'], freeport: ['fp1','fp2'] };
+    for (const [name, qs] of Object.entries(pairs)) {
+      if (qs.every(q => scores[q] !== undefined)) {
+        const t = qs.reduce((a, q) => a + (scores[q] || 0), 0);
+        const el = document.getElementById('score-' + name);
+        el.style.display = 'block';
+        el.textContent = `Score: ${t}/2 — ${t===2 ? '★ Excellent!' : t===1 ? 'Good — review the missed question.' : 'Keep studying — re-read the sections above.'}`;
+      }
     }
   }
-}
-
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
-}, { threshold: 0.05 });
-document.querySelectorAll('.event, .eq-ans').forEach(el => obs.observe(el));
-</script>
-</body>
-</html>
+  
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.event, .eq-ans').forEach(el => obs.observe(el));
+  </script>
+  </body>
+  </html>
